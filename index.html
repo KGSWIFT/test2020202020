@@ -2,87 +2,84 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>نموذج تواصل</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نموذج الاتصال</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f2f2f2;
+      background-color: #f7f7f7;
+      margin: 0;
       padding: 20px;
-      direction: rtl;
-      text-align: right;
     }
     form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 400px;
+      max-width: 600px;
       margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
     }
     input, textarea {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
+      margin: 5px 0 20px;
       border: 1px solid #ddd;
-      border-radius: 8px;
+      border-radius: 5px;
     }
     button {
-      background: #28a745;
-      color: #fff;
-      padding: 12px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
       border: none;
-      border-radius: 8px;
-      width: 100%;
-      font-size: 16px;
+      border-radius: 5px;
       cursor: pointer;
     }
     button:hover {
-      background: #218838;
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
 
-<h2>📩 نموذج التواصل</h2>
+  <h1 style="text-align: center;">نموذج الاتصال</h1>
 
-<form id="contactForm">
-  <input type="text" name="name" placeholder="الاسم الكامل" required>
-  <input type="email" name="email" placeholder="البريد الإلكتروني" required>
-  <textarea name="message" placeholder="رسالتك" rows="5" required></textarea>
-  <button type="submit">إرسال</button>
-</form>
+  <form id="contactForm">
+    <label for="name">الاسم:</label>
+    <input type="text" id="name" name="name" required>
 
-<script>
-const form = document.getElementById('contactForm');
-const scriptURL = 'https://script.google.com/macros/s/AKfycbynm09XXc0JBFpNiZ4jQQnA1Nc_a3XFzv8vSkLMfqCW0c9ndokDb7AWdYQlI3p2gc22/exec'; // ← استبدل هذا بالرابط الخاص بك
+    <label for="email">البريد الإلكتروني:</label>
+    <input type="email" id="email" name="email" required>
 
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  
-  const formData = {
-    name: form.name.value,
-    email: form.email.value,
-    message: form.message.value
-  };
+    <label for="message">الرسالة:</label>
+    <textarea id="message" name="message" rows="4" required></textarea>
 
-  fetch(scriptURL, {
-    method: 'POST',
-    body: JSON.stringify(formData),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(res => res.json())
-  .then(data => {
-    alert("✅ تم إرسال رسالتك بنجاح!");
-    form.reset();
-  })
-  .catch(err => {
-    alert("❌ فشل في الإرسال، حاول مرة أخرى.");
-    console.error(err);
-  });
-});
-</script>
+    <button type="submit">إرسال</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzTLTtubBCtDQmsEH4qGwk2Bxm-7ZFmYSrnq_K9Ur5nH8PqCQm_zbTffGr1orXeZ9e1/exec';
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => response.text())
+        .then(result => {
+          alert('✅ تم إرسال رسالتك بنجاح!');
+          form.reset();
+        })
+        .catch(error => {
+          alert('❌ فشل في الإرسال، تحقق من الإعدادات.');
+          console.error('Error!', error.message);
+        });
+    });
+  </script>
 
 </body>
 </html>
