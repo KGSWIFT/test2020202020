@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>نموذج تواصل</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+      direction: rtl;
+      text-align: right;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📩 نموذج التواصل</h2>
+
+<form id="contactForm">
+  <input type="text" name="name" placeholder="الاسم الكامل" required>
+  <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+  <textarea name="message" placeholder="رسالتك" rows="5" required></textarea>
+  <button type="submit">إرسال</button>
+</form>
+
+<script>
+const form = document.getElementById('contactForm');
+const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // ← استبدل هذا بالرابط الخاص بك
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  
+  const formData = {
+    name: form.name.value,
+    email: form.email.value,
+    message: form.message.value
+  };
+
+  fetch(scriptURL, {
+    method: 'POST',
+    body: JSON.stringify(formData),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert("✅ تم إرسال رسالتك بنجاح!");
+    form.reset();
+  })
+  .catch(err => {
+    alert("❌ فشل في الإرسال، حاول مرة أخرى.");
+    console.error(err);
+  });
+});
+</script>
+
+</body>
+</html>
