@@ -2,6 +2,96 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
+  <title>اختبار API المعاملات</title>
+</head>
+<body>
+
+  <h1>اختبار API</h1>
+
+  <button onclick="getTransactions()">جلب المعاملات</button>
+  <button onclick="addTransaction()">إضافة معاملة</button>
+  <button onclick="editTransaction()">تعديل معاملة</button>
+  <button onclick="deleteTransaction()">حذف معاملة</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyoafchNOGfvl0mN40gJUf5mtgtq9a8ywSwb2JhanMCgbyCvbjWBeN7ztMbNUARWxkAtg/exec'; // ضع معرف السكريبت هنا
+
+    function getTransactions() {
+      fetch(`${scriptURL}?action=getTransactions`)
+        .then(res => res.json())
+        .then(data => document.getElementById('output').textContent = JSON.stringify(data, null, 2))
+        .catch(err => console.error(err));
+    }
+
+    function addTransaction() {
+      const formData = new URLSearchParams();
+      formData.append('action', 'addTransaction');
+      formData.append('id', '123');
+      formData.append('engineer', 'خالد');
+      formData.append('type', 'عملية جديدة');
+      formData.append('date', '2025-04-26');
+      formData.append('createdAt', new Date().toISOString());
+
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString()
+      })
+      .then(res => res.json())
+      .then(data => document.getElementById('output').textContent = JSON.stringify(data, null, 2))
+      .catch(err => console.error(err));
+    }
+
+    function editTransaction() {
+      const formData = new URLSearchParams();
+      formData.append('action', 'editTransaction');
+      formData.append('oldId', '123'); // ID القديم الذي تود تعديله
+      formData.append('id', '456');    // ID الجديد
+      formData.append('engineer', 'خالد المعدل');
+      formData.append('type', 'عملية معدلة');
+      formData.append('date', '2025-04-27');
+      formData.append('createdAt', new Date().toISOString());
+
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString()
+      })
+      .then(res => res.json())
+      .then(data => document.getElementById('output').textContent = JSON.stringify(data, null, 2))
+      .catch(err => console.error(err));
+    }
+
+    function deleteTransaction() {
+      const formData = new URLSearchParams();
+      formData.append('action', 'deleteTransaction');
+      formData.append('id', '456'); // ID الذي تريد حذفه
+
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString()
+      })
+      .then(res => res.json())
+      .then(data => document.getElementById('output').textContent = JSON.stringify(data, null, 2))
+      .catch(err => console.error(err));
+    }
+  </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نموذج الاتصال</title>
   <style>
